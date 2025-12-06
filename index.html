@@ -8,7 +8,6 @@
   <title>DreamWaQ++ | Obstacle-Aware Quadrupedal Locomotion</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro|Roboto+Mono" rel="stylesheet">
-
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
@@ -55,9 +54,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          
           <p class="publication-venue">IEEE Transactions on Robotics (T-RO) 2025</p>
-          
           <h1 class="title is-1 publication-title">DreamWaQ++</h1>
           <h2 class="title is-4" style="color: #666; font-weight: 400;">
             Obstacle-Aware Quadrupedal Locomotion with Resilient Multi-Modal Reinforcement Learning
@@ -74,12 +71,12 @@
             <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/prof-hyunmyung/">Hyun Myung</a><sup>1</sup></span>
           </div>
 
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Urban Robotics Lab, KAIST,</span>
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>1</sup>Urban Robotics Lab, KAIST</span> · 
             <span class="author-block"><sup>2</sup>SPARK Lab, MIT</span>
           </div>
 
-          <div class="column has-text-centered">
+          <div class="column has-text-centered" style="padding: 0.5rem;">
             <div class="publication-links">
               <span class="link-block">
                 <a href="http://arxiv.org/pdf/2409.19709" class="external-link button is-normal is-rounded is-dark">
@@ -107,28 +104,26 @@
   </div>
 </section>
 
-<!-- Teaser Video -->
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <div class="publication-video">
-        <iframe src="https://www.youtube.com/embed/IeBNRQsmKR4?si=OXhyf3lII7lfsaQR"
-                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<!-- Teaser Video + Main Figure Side by Side -->
+<section class="section" style="padding-top: 0;">
+  <div class="container is-max-widescreen">
+    <div class="two-column">
+      <div>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/IeBNRQsmKR4?si=OXhyf3lII7lfsaQR"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+        <p class="video-caption">Main demonstration video showcasing DreamWaQ++ capabilities.</p>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- Main Figure -->
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="figure-container">
-      <img src="./static/paper_images/png/main_red.png" alt="DreamWaQ++ demonstrations">
-      <p class="figure-caption">
-        DreamWaQ++ enables agile locomotion over diverse obstacles: (a) ascending and (b) descending stairs, 
-        (c) leaping, (d) probing uncertain terrain, (e) crossing gaps, (f) adapting to deformable terrain, 
-        (g) balancing on moving platforms, and (h) climbing 35° slopes—all in a single neural network.
-      </p>
+      <div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/main_red.png" alt="DreamWaQ++ demonstrations">
+          <p class="figure-caption">
+            Agile locomotion: (a-b) stairs, (c) leaping, (d) probing, (e) gap crossing, 
+            (f) deformable terrain, (g) moving platforms, (h) 35° slopes.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -139,13 +134,9 @@
     <div class="section-header">
       <h2 class="section-title">Abstract</h2>
     </div>
-    
     <div class="abstract-box">
       <p>
-        Quadrupedal robots hold promising potential for navigating cluttered environments with resilience akin to their animal counterparts. However, their floating base configuration makes them vulnerable to real-world uncertainties.
-      </p>
-      <p>
-        Deep reinforcement learning has become a plausible alternative for robust locomotion control. However, approaches relying solely on <strong>proprioception</strong> require front-feet contact to detect obstacles—sacrificing collision-free locomotion. Meanwhile, incorporating <strong>exteroception</strong> typically requires precisely modeled terrain maps.
+        Quadrupedal robots hold promising potential for navigating cluttered environments. However, approaches relying solely on <strong>proprioception</strong> require front-feet contact to detect obstacles. Meanwhile, incorporating <strong>exteroception</strong> typically requires precisely modeled terrain maps.
       </p>
       <p>
         We propose a novel method to fuse proprioception and exteroception with <strong>resilient multi-modal reinforcement learning</strong>. The result is an agile controller that traverses rough terrains, steep slopes, and high-rise stairs while remaining robust against out-of-distribution situations.
@@ -156,236 +147,160 @@
 
 <hr class="section-divider">
 
-<!-- The Problem: Why not just blind locomotion? -->
+<!-- Method Overview -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🦿 The Limitation of Blind Locomotion</h3>
-      <p>
-        Blind controllers rely only on proprioception—joint positions, velocities, and IMU data. They're remarkably robust but have a fundamental limitation: <strong>they can only sense obstacles after collision</strong>. Watch what happens when a blind controller approaches stairs:
+  <div class="container is-max-widescreen">
+    <div class="section-header">
+      <h2 class="section-title">Method Overview</h2>
+    </div>
+
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/overview_red.png" alt="DreamWaQ++ architecture">
+      <p class="figure-caption">
+        Hierarchical perception-control framework with low-level encoders and a spatio-temporal mixer for multi-modal fusion.
       </p>
-      
+    </div>
+
+    <div class="figure-grid">
+      <div class="figure-container">
+        <img src="./static/paper_images/png/ext_encoder_red.png" alt="Exteroceptive encoder">
+        <p class="figure-caption">Exteroceptive encoder for 3D point clouds.</p>
+      </div>
+      <div class="figure-container">
+        <img src="./static/paper_images/png/embedding_analysis_red.png" alt="Latent embedding">
+        <p class="figure-caption">Learned latent space captures terrain properties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Stair Climbing Race -->
+<section class="section">
+  <div class="container is-max-widescreen">
+    <div class="content-block">
+      <h3>🪜 Stair Climbing Performance</h3>
+      <p>
+        Blind controllers can only sense stairs after collision. DreamWaQ++ anticipates and adapts its gait proactively.
+      </p>
+    </div>
+
+    <div class="media-row">
       <div class="video-block">
         <div class="publication-video">
           <iframe src="https://www.youtube.com/embed/olQ-9czne1c?si=B-c0iD1RbISytX8G" 
                   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <p class="video-caption">
-          <strong>Movie S2:</strong> Stair-climbing race between DreamWaQ++ (ours), DreamWaQ (blind), and the built-in controller. 
-          The blind controller stumbles on the first step while DreamWaQ++ anticipates and adapts.
-        </p>
+        <p class="video-caption"><strong>S2:</strong> Race vs DreamWaQ and built-in controller.</p>
       </div>
-    </div>
-
-    <div class="feature-box">
-      <h4>💡 The Key Insight</h4>
-      <p>
-        Animals don't walk blindly—they look ahead to plan their footsteps. DreamWaQ++ gives quadrupeds this same ability by fusing proprioception with 3D point cloud perception.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<hr class="section-divider">
-
-<!-- Method Overview -->
-<section class="section">
-  <div class="container is-max-widescreen">
-    
-    <div class="section-header">
-      <h2 class="section-title">Method Overview</h2>
-      <p class="section-subtitle">
-        A hierarchical perception-control framework with spatio-temporal mixing
-      </p>
-    </div>
-
-    <div class="figure-container">
-      <img src="./static/paper_images/png/overview_red.png" alt="DreamWaQ++ architecture">
-      <p class="figure-caption">
-        DreamWaQ++ comprises a perception pipeline and a control pipeline. The encoder has a hierarchical structure with low-level measurement encoders and a spatio-temporal mixer for efficient multi-modal fusion.
-      </p>
-    </div>
-
-    <div class="content-block">
-      <p>
-        The controller receives two streams of information: <strong>proprioception</strong> (joint states, body orientation) and <strong>exteroception</strong> (3D point clouds from a depth camera). These are encoded separately, then fused through a <em>spatio-temporal mixer</em> that captures both spatial terrain features and temporal dynamics.
-      </p>
-    </div>
-
-    <div class="side-by-side">
-      <div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/ext_encoder_red.png" alt="Exteroceptive encoder">
-          <p class="figure-caption">Exteroceptive encoder architecture for processing 3D point clouds.</p>
-        </div>
-      </div>
-      <div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/embedding_analysis_red.png" alt="Latent embedding analysis">
-          <p class="figure-caption">The learned latent space captures meaningful terrain properties.</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="section-divider">
-
-<!-- Stair Climbing -->
-<section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🪜 Resilient Stair Climbing</h3>
-      <p>
-        Stairs are challenging because they require precise foothold selection and gait adaptation. DreamWaQ++ handles various stair configurations with different rise and run properties:
-      </p>
-      
       <div class="video-block">
         <div class="publication-video">
           <iframe src="https://www.youtube.com/embed/Aj2mTwYs8vA?si=Z-GACjEI6__SkVav" 
                   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <p class="video-caption">
-          <strong>Movie S3:</strong> Resilient stair-climbing across stairs with varying dimensions.
-        </p>
-      </div>
-
-      <div class="figure-container">
-        <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Stair climbing results">
-        <p class="figure-caption">Quantitative comparison of ascending and descending performance across different stair configurations.</p>
+        <p class="video-caption"><strong>S3:</strong> Various stair configurations.</p>
       </div>
     </div>
 
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Stair climbing results">
+      <p class="figure-caption">Quantitative comparison across different stair rise/run configurations.</p>
+    </div>
   </div>
 </section>
 
 <hr class="section-divider">
 
-<!-- Emergent Behaviors -->
+<!-- Emergent Behaviors + OOD -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🔍 Emergent Probing Behavior</h3>
-      <p>
-        One of the most fascinating outcomes is the <strong>emergent probing behavior</strong>. When faced with uncertain terrain (like a hidden gap), DreamWaQ++ cautiously extends its front leg to probe the surface before committing—just like animals do!
-      </p>
-      
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/WgrBbcCyqtc?si=5N7I5-W9KSePvEzT" 
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <div class="container is-max-widescreen">
+    <div class="two-column">
+      <!-- Probing -->
+      <div>
+        <div class="content-block">
+          <h3>🔍 Emergent Probing</h3>
+          <p>
+            When facing uncertain terrain, DreamWaQ++ cautiously probes with its front leg before committing—a behavior that emerged naturally from training.
+          </p>
         </div>
-        <p class="video-caption">
-          <strong>Movie S4:</strong> Emergent probing behavior when navigating uncertain terrain.
-        </p>
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/WgrBbcCyqtc?si=5N7I5-W9KSePvEzT" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption"><strong>S4:</strong> Probing behavior on uncertain terrain.</p>
+        </div>
+        <div class="figure-container">
+          <img src="./static/paper_images/png/results_probing_red.png" alt="Probing analysis">
+        </div>
       </div>
-
-      <div class="figure-container">
-        <img src="./static/paper_images/png/results_probing_red.png" alt="Probing behavior analysis">
-        <p class="figure-caption">Analysis of the probing behavior: the robot hesitates and probes before stepping onto uncertain terrain.</p>
+      
+      <!-- OOD -->
+      <div>
+        <div class="content-block">
+          <h3>🛡️ Out-of-Distribution Robustness</h3>
+          <p>
+            DreamWaQ++ gracefully handles sensor degradation, unexpected obstacles, and novel terrain types never seen during training.
+          </p>
+        </div>
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/cTm4J_yHG74?si=UTANvD5O3u6ANgKz" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption"><strong>S5:</strong> Adaptation in OOD situations.</p>
+        </div>
+        <div class="figure-container">
+          <img src="./static/paper_images/png/results_awareness_red.png" alt="Awareness analysis">
+        </div>
       </div>
     </div>
-
-    <div class="feature-box">
-      <h4>🧠 Why does this emerge?</h4>
-      <p>
-        This behavior wasn't explicitly programmed—it emerged from the multi-modal fusion. When visual information is ambiguous, the controller becomes more cautious and relies on proprioceptive feedback to verify terrain properties.
-      </p>
-    </div>
-
   </div>
 </section>
 
 <hr class="section-divider">
 
-<!-- Out-of-Distribution Robustness -->
+<!-- Slopes + Large Obstacles -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🛡️ Robust to Out-of-Distribution Scenarios</h3>
-      <p>
-        Real-world deployment means encountering situations never seen during training. DreamWaQ++ gracefully handles sensor degradation, unexpected obstacles, and novel terrain types:
-      </p>
-      
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/cTm4J_yHG74?si=UTANvD5O3u6ANgKz" 
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <div class="container is-max-widescreen">
+    <div class="two-column">
+      <!-- Slopes -->
+      <div>
+        <div class="content-block">
+          <h3>⛰️ Extreme Slopes</h3>
+          <p>Successfully navigates slopes up to <strong>35 degrees</strong>.</p>
         </div>
-        <p class="video-caption">
-          <strong>Movie S5:</strong> Adaptation in out-of-distribution situations including sensor occlusion and unexpected perturbations.
-        </p>
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/VjnD4arlX0U?si=zgspNPaSc7CBDNZ6" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption"><strong>S6:</strong> Performance on extreme slopes.</p>
+        </div>
+        <div class="figure-container">
+          <img src="./static/paper_images/png/results_slope_red.png" alt="Slope results">
+        </div>
+      </div>
+      
+      <!-- Large Obstacles -->
+      <div>
+        <div class="content-block">
+          <h3>🧗 Large Obstacles</h3>
+          <p>Climbs obstacles <strong>larger than its leg length</strong> using emergent leaping.</p>
+        </div>
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/dJH389fL52Q?si=EK4xkmNCCRqkp5YQ" 
+                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption"><strong>S8:</strong> Overcoming high obstacles.</p>
+        </div>
+        <div class="figure-container">
+          <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results">
+        </div>
       </div>
     </div>
-
-  </div>
-</section>
-
-<hr class="section-divider">
-
-<!-- Extreme Slopes -->
-<section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>⛰️ Extreme Slope Navigation</h3>
-      <p>
-        Steep slopes require careful weight distribution and coordinated leg movements. DreamWaQ++ successfully navigates slopes up to <strong>35 degrees</strong>:
-      </p>
-      
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/VjnD4arlX0U?si=zgspNPaSc7CBDNZ6" 
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption">
-          <strong>Movie S6:</strong> Performance comparison on extreme slope inclinations.
-        </p>
-      </div>
-
-      <div class="figure-container">
-        <img src="./static/paper_images/png/results_slope_red.png" alt="Slope climbing results">
-        <p class="figure-caption">Quantitative analysis of slope navigation performance.</p>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<hr class="section-divider">
-
-<!-- Large Obstacles -->
-<section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🧗 Overcoming Large Obstacles</h3>
-      <p>
-        Perhaps most impressively, DreamWaQ++ can climb obstacles <strong>larger than its own leg length</strong>—requiring dynamic leaping motions that emerge from training:
-      </p>
-      
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/dJH389fL52Q?si=EK4xkmNCCRqkp5YQ" 
-                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption">
-          <strong>Movie S8:</strong> Overcoming high obstacles that exceed the robot's leg reach.
-        </p>
-      </div>
-
-      <div class="figure-container">
-        <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results">
-        <p class="figure-caption">Performance on obstacles of varying heights, demonstrating the emergence of leaping behaviors.</p>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -393,35 +308,30 @@
 
 <!-- Multi-Robot Scalability -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
-    <div class="content-block">
-      <h3>🤖 Scalability Across Platforms</h3>
-      <p>
-        DreamWaQ++ isn't tied to a single robot. We demonstrate successful deployment on multiple Unitree platforms: <strong>Go1, Go2, and B2</strong>:
-      </p>
-      
+  <div class="container is-max-widescreen">
+    <div class="section-header">
+      <h2 class="section-title">🤖 Multi-Robot Scalability</h2>
+      <p class="section-subtitle">Demonstrated on Unitree Go1, Go2, and B2 platforms</p>
+    </div>
+
+    <div class="media-row">
       <div class="video-block">
         <div class="publication-video">
           <iframe src="https://www.youtube.com/embed/Ne-oG4orWp4?si=9myOZ9iZkFJ0Bnsa" 
                   frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <p class="video-caption">
-          <strong>Movie S7:</strong> DreamWaQ++ deployed across different quadrupedal platforms.
-        </p>
+        <p class="video-caption"><strong>S7:</strong> Cross-platform deployment.</p>
       </div>
-
-      <div class="figure-container">
+      <div class="figure-container" style="margin: 0;">
         <img src="./static/paper_images/png/hardware_red.png" alt="Hardware setup">
-        <p class="figure-caption">Hardware configurations used in our experiments: Unitree Go1, Go2, and B2 with various depth sensors.</p>
-      </div>
-
-      <div class="figure-container">
-        <img src="./static/paper_images/png/multirobot_success_red.png" alt="Multi-robot success rates">
-        <p class="figure-caption">Success rates across different robot platforms, demonstrating the transferability of DreamWaQ++.</p>
+        <p class="figure-caption">Hardware configurations with various depth sensors.</p>
       </div>
     </div>
 
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/multirobot_success_red.png" alt="Multi-robot success">
+      <p class="figure-caption">Success rates across different robot platforms.</p>
+    </div>
   </div>
 </section>
 
@@ -429,28 +339,21 @@
 
 <!-- Ablation Studies -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
+  <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">Ablation Studies</h2>
-      <p class="section-subtitle">Understanding what makes DreamWaQ++ work</p>
     </div>
 
-    <div class="side-by-side">
-      <div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Ablation heatmap">
-          <p class="figure-caption">Component contribution analysis showing the importance of each module.</p>
-        </div>
+    <div class="figure-grid">
+      <div class="figure-container">
+        <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Ablation heatmap">
+        <p class="figure-caption">Component contribution analysis.</p>
       </div>
-      <div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/ablation_recons_red.png" alt="Reconstruction ablation">
-          <p class="figure-caption">Impact of reconstruction objectives on learning effective representations.</p>
-        </div>
+      <div class="figure-container">
+        <img src="./static/paper_images/png/ablation_recons_red.png" alt="Reconstruction ablation">
+        <p class="figure-caption">Impact of reconstruction objectives.</p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -458,33 +361,27 @@
 
 <!-- Additional Videos -->
 <section class="section">
-  <div class="container is-max-desktop">
-    
+  <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">Additional Videos</h2>
     </div>
 
-    <div class="columns is-centered">
-      <div class="column">
-        <div class="video-block">
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/rBNk8LY1r1g?si=IHjWNND7aafsgGg-" 
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="video-caption"><strong>Movie S9:</strong> DreamWaQ baseline comparison across platforms.</p>
+    <div class="video-grid">
+      <div class="video-block">
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/rBNk8LY1r1g?si=IHjWNND7aafsgGg-" 
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
+        <p class="video-caption"><strong>S9:</strong> DreamWaQ baseline comparison.</p>
       </div>
-      <div class="column">
-        <div class="video-block">
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/AduhW4Ai2pM?si=squ4lcRROLgVtGRz" 
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="video-caption"><strong>Movie S10:</strong> Asynchronous stair-climbing race for detailed comparison.</p>
+      <div class="video-block">
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/AduhW4Ai2pM?si=squ4lcRROLgVtGRz" 
+                  frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
+        <p class="video-caption"><strong>S10:</strong> Asynchronous stair-climbing race.</p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -502,7 +399,8 @@
       </button>
       <pre><code id="bibtex-content">@article{nahrendra2024obstacle,
   title={Obstacle-Aware Quadrupedal Locomotion With Resilient Multi-Modal Reinforcement Learning},
-  author={Nahrendra, I Made Aswin and Yu, Byeongho and Oh, Minho and Lee, Dongkyu and Lee, Seunghyun and Lee, Hyeonwoo and Lim, Hyungtae and Myung, Hyun},
+  author={Nahrendra, I Made Aswin and Yu, Byeongho and Oh, Minho and Lee, Dongkyu 
+          and Lee, Seunghyun and Lee, Hyeonwoo and Lim, Hyungtae and Myung, Hyun},
   journal={IEEE Transactions on Robotics},
   year={2025},
   publisher={IEEE}
@@ -521,10 +419,10 @@
     </div>
     <div class="columns is-centered">
       <div class="column is-8">
-        <div class="content">
+        <div class="content has-text-centered">
           <p>
-            This website template is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> 
-            and is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+            Template from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
           </p>
         </div>
       </div>
@@ -534,5 +432,3 @@
 
 </body>
 </html>
-
-
