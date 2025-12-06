@@ -48,6 +48,30 @@
   </div>
 </nav>
 
+<!-- Fixed Navigation Pane -->
+<nav class="nav-pane" id="navPane">
+  <div class="nav-pane-content">
+    <div class="nav-pane-header">
+      <span class="nav-pane-title">Navigation</span>
+      <button class="nav-pane-toggle" id="navToggle" aria-label="Toggle navigation">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+    </div>
+    <ul class="nav-pane-links">
+      <li><a href="#abstract" class="nav-link">Abstract</a></li>
+      <li><a href="#method" class="nav-link">Method</a></li>
+      <li><a href="#stair-climbing" class="nav-link">Stair Climbing</a></li>
+      <li><a href="#probing" class="nav-link">Probing Behavior</a></li>
+      <li><a href="#slopes" class="nav-link">Extreme Slopes</a></li>
+      <li><a href="#obstacles" class="nav-link">Large Obstacles</a></li>
+      <li><a href="#scalability" class="nav-link">Multi-Robot</a></li>
+      <li><a href="#ablation" class="nav-link">Ablation</a></li>
+      <li><a href="#videos" class="nav-link">Videos</a></li>
+      <li><a href="#bibtex" class="nav-link">Citation</a></li>
+    </ul>
+  </div>
+</nav>
+
 <!-- Hero Section -->
 <section class="hero">
   <div class="hero-body">
@@ -131,7 +155,7 @@
 </section>
 
 <!-- Abstract -->
-<section class="section">
+<section class="section" id="abstract">
   <div class="container is-max-desktop">
     <div class="section-header">
       <h2 class="section-title">Abstract</h2>
@@ -150,7 +174,7 @@
 <hr class="section-divider">
 
 <!-- Method Overview -->
-<section class="section">
+<section class="section" id="method">
   <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">Method Overview</h2>
@@ -179,7 +203,7 @@
 <hr class="section-divider">
 
 <!-- Stair Climbing Race -->
-<section class="section">
+<section class="section" id="stair-climbing">
   <div class="container is-max-widescreen">
     <div class="content-block">
       <h3>🪜 Stair Climbing Performance</h3>
@@ -215,7 +239,7 @@
 <hr class="section-divider">
 
 <!-- Emergent Behaviors + OOD -->
-<section class="section">
+<section class="section" id="probing">
   <div class="container is-max-widescreen">
     <div class="two-column">
       <!-- Probing -->
@@ -263,45 +287,46 @@
 
 <hr class="section-divider">
 
-<!-- Slopes + Large Obstacles -->
-<section class="section">
+<!-- Slopes -->
+<section class="section" id="slopes">
   <div class="container is-max-widescreen">
-    <div class="two-column">
-      <!-- Slopes -->
-      <div>
-        <div class="content-block">
-          <h3>⛰️ Extreme Slopes</h3>
-          <p>Successfully navigates slopes up to <strong>35 degrees</strong>.</p>
-        </div>
-        <div class="video-block">
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/VjnD4arlX0U?si=zgspNPaSc7CBDNZ6" 
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="video-caption"><strong>S6:</strong> Performance on extreme slopes.</p>
-        </div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/results_slope_red.png" alt="Slope results">
-        </div>
+    <div class="content-block">
+      <h3>⛰️ Extreme Slopes</h3>
+      <p>Successfully navigates slopes up to <strong>35 degrees</strong>.</p>
+    </div>
+    <div class="video-block">
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/VjnD4arlX0U?si=zgspNPaSc7CBDNZ6" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
-      
-      <!-- Large Obstacles -->
-      <div>
-        <div class="content-block">
-          <h3>🧗 Large Obstacles</h3>
-          <p>Climbs obstacles <strong>larger than its leg length</strong> using emergent leaping.</p>
-        </div>
-        <div class="video-block">
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/dJH389fL52Q?si=EK4xkmNCCRqkp5YQ" 
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="video-caption"><strong>S8:</strong> Overcoming high obstacles.</p>
-        </div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results">
-        </div>
+      <p class="video-caption"><strong>S6:</strong> Performance on extreme slopes.</p>
+    </div>
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/results_slope_red.png" alt="Slope results">
+      <p class="figure-caption">Quantitative analysis of slope navigation performance.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Large Obstacles -->
+<section class="section" id="obstacles">
+  <div class="container is-max-widescreen">
+    <div class="content-block">
+      <h3>🧗 Large Obstacles</h3>
+      <p>Climbs obstacles <strong>larger than its leg length</strong> using emergent leaping.</p>
+    </div>
+    <div class="video-block">
+      <div class="publication-video">
+        <iframe src="https://www.youtube.com/embed/dJH389fL52Q?si=EK4xkmNCCRqkp5YQ" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
+      <p class="video-caption"><strong>S8:</strong> Overcoming high obstacles.</p>
+    </div>
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results">
+      <p class="figure-caption">Performance on obstacles of varying heights, demonstrating emergent leaping behaviors.</p>
     </div>
   </div>
 </section>
@@ -309,7 +334,7 @@
 <hr class="section-divider">
 
 <!-- Multi-Robot Scalability -->
-<section class="section">
+<section class="section" id="scalability">
   <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">🤖 Multi-Robot Scalability</h2>
@@ -340,7 +365,7 @@
 <hr class="section-divider">
 
 <!-- Ablation Studies -->
-<section class="section">
+<section class="section" id="ablation">
   <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">Ablation Studies</h2>
@@ -362,7 +387,7 @@
 <hr class="section-divider">
 
 <!-- Additional Videos -->
-<section class="section">
+<section class="section" id="videos">
   <div class="container is-max-widescreen">
     <div class="section-header">
       <h2 class="section-title">Additional Videos</h2>

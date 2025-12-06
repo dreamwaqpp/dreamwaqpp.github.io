@@ -14,6 +14,65 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  // Navigation pane toggle
+  const navPane = document.getElementById('navPane');
+  const navToggle = document.getElementById('navToggle');
+  
+  if (navToggle && navPane) {
+    navToggle.addEventListener('click', () => {
+      navPane.classList.toggle('collapsed');
+    });
+  }
+
+  // Smooth scroll for navigation links
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
+      
+      if (targetSection) {
+        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+        const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Active section highlighting on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const observerOptions = {
+    root: null,
+    rootMargin: '-25% 0px -60% 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        if (id) {
+          // Remove active class from all links
+          navLinks.forEach(link => link.classList.remove('active'));
+          // Add active class to corresponding link
+          const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+          if (activeLink) {
+            activeLink.classList.add('active');
+          }
+        }
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+
   // Initialize carousels if present
   if (typeof bulmaCarousel !== 'undefined') {
     const carousels = bulmaCarousel.attach('.carousel', {
