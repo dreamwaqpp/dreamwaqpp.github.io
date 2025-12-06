@@ -1,0 +1,1 @@
+This folder stores your compressed figures (typically those with `.pdf` extension with a `_red` tag in the filename)
