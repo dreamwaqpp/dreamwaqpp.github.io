@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (typeof bulmaSlider !== 'undefined') {
     bulmaSlider.attach();
   }
+
 });
 
 /**

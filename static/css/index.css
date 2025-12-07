@@ -275,14 +275,111 @@ body {
   overflow: hidden;
   border-radius: 8px !important;
   border: 1px solid var(--mist-blue-pale);
+  background: #000;
 }
 
-.publication-video iframe {
+.publication-video iframe,
+.publication-video video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+}
+
+.publication-video video {
+  border-radius: 8px;
+}
+
+/* Video Segment Grid - 2x3 layout */
+.video-segment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.video-segment-cell {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--mist-blue-pale);
+  background: #000;
+}
+
+.video-segment-cell {
+  cursor: pointer;
+}
+
+.video-segment-cell video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #000;
+  z-index: 2;
+}
+
+.video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--mist-blue-pale) 0%, var(--mist-blue-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+
+.video-segment-cell.loading .video-placeholder {
+  background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+  background-size: 200% 100%;
+  animation: loading-shimmer 1.5s infinite;
+}
+
+.video-segment-cell.playing .video-placeholder {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.play-icon {
+  font-size: 3rem;
+  color: var(--mist-blue-dark);
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.video-segment-cell:hover .play-icon {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+@keyframes loading-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .video-segment-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+  }
 }
 
 /* Section Styling */
