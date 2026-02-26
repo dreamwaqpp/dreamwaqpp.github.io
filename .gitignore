@@ -1,4 +1,5 @@
 .DS_store
 .idea
 /static/accept
-/static/videos/
+/static/videos/*
+!/static/videos/Movie S11*
