@@ -64,8 +64,8 @@
       <li><a href="#probing" class="nav-link">Probing Behavior</a></li>
       <li><a href="#ood" class="nav-link">OOD Robustness</a></li>
       <li><a href="#slopes" class="nav-link">Extreme Slopes</a></li>
-      <li><a href="#obstacles" class="nav-link">Large Obstacles</a></li>
       <li><a href="#scalability" class="nav-link">Multi-Robot</a></li>
+      <li><a href="#obstacles" class="nav-link">Large Obstacles</a></li>
       <li><a href="#ablation" class="nav-link">Ablation</a></li>
       <li><a href="#videos" class="nav-link">Videos</a></li>
       <li><a href="#bibtex" class="nav-link">Citation</a></li>
@@ -106,7 +106,7 @@
           <div class="column has-text-centered" style="padding: 0.5rem;">
             <div class="publication-links">
               <span class="link-block">
-                <a href="http://arxiv.org/pdf/2409.19709" class="external-link button is-normal is-rounded is-dark">
+                <a href="./static/paper.pdf" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fas fa-file-pdf"></i></span>
                   <span>Paper</span>
                 </a>
@@ -416,35 +416,6 @@
 
 <hr class="section-divider">
 
-<!-- Large Obstacles -->
-<section class="section" id="obstacles">
-  <div class="container is-max-widescreen">
-    <div class="result-section">
-      <div class="result-header">
-        <h3>Large Obstacles</h3>
-        <p>
-          Can a small robot climb something taller than its own legs? Yes. DreamWaQ++ develops <strong>parkour-like behaviors</strong> that vary by robot morphology: the Unitree Go1 <strong>jumps</strong> over 0.6 m obstacles, ANYmal-C <strong>climbs</strong> 1.0 m walls, and the Hound robot uses a <strong>swinging motion</strong> to clear 1.5 m barriers. In the real world, a Go1 carrying a 2.5 kg payload climbed a 41 cm soft sofa.
-        </p>
-      </div>
-
-      <div class="media-row">
-        <div class="video-block">
-          <div class="publication-video">
-            <iframe src="https://www.youtube.com/embed/pwwwmnd3Xnc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <p class="video-caption">Overcoming large obstacles with emergent leaping and climbing.</p>
-        </div>
-        <div class="figure-container" style="margin: 0;">
-          <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results across platforms">
-          <p class="figure-caption">Go1 (0.6 m), ANYmal-C (1.0 m), Hound (1.5 m), and real-world deployment with payload.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="section-divider">
-
 <!-- Multi-Robot Scalability -->
 <section class="section" id="scalability">
   <div class="container is-max-widescreen">
@@ -472,6 +443,54 @@
       <div class="figure-container main-figure">
         <img src="./static/paper_images/png/multirobot_success_rev_red.png" alt="Multi-robot success rates">
         <p class="figure-caption">Success rates across different robot platforms.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Large Obstacles -->
+<section class="section" id="obstacles">
+  <div class="container is-max-widescreen">
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Large Obstacles</h3>
+        <p>
+          Can a small robot climb something taller than its own legs? Yes. DreamWaQ++ develops <strong>parkour-like behaviors</strong> that vary by robot morphology. In the real world, a Go1 carrying a 2.5 kg payload successfully climbed a 41 cm soft sofa.
+        </p>
+      </div>
+
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-stat">0.6 m</div>
+          <div class="highlight-label">Go1 &mdash; jumping motion</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-stat">1.0 m</div>
+          <div class="highlight-label">ANYmal-C &mdash; climbing motion</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-stat">1.5 m</div>
+          <div class="highlight-label">Hound &mdash; swinging motion</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-stat">2.5 kg</div>
+          <div class="highlight-label">Real-world payload on Go1</div>
+        </div>
+      </div>
+
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/pwwwmnd3Xnc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Overcoming large obstacles with emergent leaping and climbing.</p>
+        </div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results across platforms">
+          <p class="figure-caption">Go1 (0.6 m), ANYmal-C (1.0 m), Hound (1.5 m), and real-world deployment with payload.</p>
+        </div>
       </div>
     </div>
   </div>

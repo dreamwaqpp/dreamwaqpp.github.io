@@ -3,13 +3,13 @@
    ============================================ */
 
 :root {
-  /* Mist Blue Color Palette */
-  --mist-blue: #6B9AC4;
-  --mist-blue-light: #A8C5DB;
-  --mist-blue-dark: #4A7BA7;
-  --mist-blue-pale: #E8F1F8;
-  --mist-blue-accent: #5B8FB9;
-  
+  /* URL Blue Color Palette — based on urobot.kaist.ac.kr identity #4d7fb9 */
+  --mist-blue: #4d7fb9;
+  --mist-blue-light: #89aed4;
+  --mist-blue-dark: #3b6897;
+  --mist-blue-pale: #EDF2F8;
+  --mist-blue-accent: #4272a8;
+
   /* Complementary colors */
   --slate: #4A5568;
   --slate-light: #718096;
@@ -564,7 +564,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin: 1rem 0;
+  margin: 1rem auto;
+  max-width: 1100px;
 }
 
 @media screen and (max-width: 768px) {
@@ -683,7 +684,13 @@ body {
 
 /* Main figure - constrained width */
 .main-figure {
-  max-width: 900px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Constrain result sections to match text width */
+.result-section {
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -860,7 +867,8 @@ sup {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
+  max-width: 1100px;
 }
 
 @media screen and (max-width: 768px) {
@@ -922,7 +930,6 @@ sup {
   font-size: 0.95rem;
   line-height: 1.7;
   color: #444;
-  max-width: 900px;
 }
 
 .result-header strong {
