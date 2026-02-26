@@ -59,9 +59,9 @@
     <ul class="nav-pane-links">
       <li><a href="#abstract" class="nav-link">Abstract</a></li>
       <li><a href="#method" class="nav-link">Method</a></li>
-      <li><a href="#stair-race" class="nav-link">Stair Climbing Race</a></li>
+      <li><a href="#stair-race" class="nav-link">Stair Climbing</a></li>
       <li><a href="#obstacle-awareness" class="nav-link">Obstacle Awareness</a></li>
-      <li><a href="#probing" class="nav-link">Emergent Probing</a></li>
+      <li><a href="#probing" class="nav-link">Probing Behavior</a></li>
       <li><a href="#ood" class="nav-link">OOD Robustness</a></li>
       <li><a href="#slopes" class="nav-link">Extreme Slopes</a></li>
       <li><a href="#obstacles" class="nav-link">Large Obstacles</a></li>
@@ -139,7 +139,6 @@
         <div class="publication-video">
           <iframe src="https://www.youtube.com/embed/DECFbMdpfps?autoplay=1&mute=1&loop=1&playlist=DECFbMdpfps" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <p class="video-caption">Main demonstration showcasing DreamWaQ++ capabilities across diverse terrains.</p>
       </div>
       <div>
         <div class="figure-container" style="margin: 0;">
@@ -154,7 +153,7 @@
   </div>
 </section>
 
-<!-- Abstract -->
+<!-- Abstract + Highlights -->
 <section class="section" id="abstract">
   <div class="container is-max-desktop">
     <div class="section-header">
@@ -162,14 +161,30 @@
     </div>
     <div class="abstract-box">
       <p>
-        Quadrupedal robots hold promising potential for applications in navigating cluttered environments with resilience akin to their animal counterparts. However, their floating-base configuration makes them susceptible to real-world uncertainties, presenting substantial challenges in locomotion control.
+        Quadrupedal robots can navigate cluttered environments like their animal counterparts, but their floating-base configuration makes them vulnerable to real-world uncertainties. Controllers that rely only on <strong>proprioception</strong> (body sensing) must physically collide with obstacles to detect them. Those that add <strong>exteroception</strong> (vision) need precisely modeled terrain maps that are hard to maintain in the wild.
       </p>
       <p>
-        Deep reinforcement learning has emerged as a viable alternative for developing robust locomotion controllers. However, approaches relying solely on <strong>proprioception</strong> often sacrifice collision-free locomotion, as they require front-foot contact to detect stairs and adapt the gait. Meanwhile, incorporating <strong>exteroception</strong> necessitates a precisely modeled map observed by exteroceptive sensors over time.
+        DreamWaQ++ bridges this gap by fusing both modalities through a <strong>resilient multi-modal reinforcement learning</strong> framework. The result: a single controller that handles rough terrains, steep slopes, and high-rise stairs&mdash;while gracefully recovering from sensor failures and situations it has never seen before.
       </p>
-      <p>
-        This work proposes a novel method for fusing proprioception and exteroception through a <strong>resilient multi-modal reinforcement learning</strong> framework. The proposed method yields a controller demonstrating agile locomotion across diverse real-world courses, including rough terrains, steep slopes, and high-rise stairs, while maintaining robustness in out-of-distribution situations.
-      </p>
+    </div>
+
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="highlight-stat">35&deg;</div>
+        <div class="highlight-label">Slope climbing, 3.5&times; beyond training range</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-stat">97.8%</div>
+        <div class="highlight-label">Success rate on challenging stairs</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-stat">4</div>
+        <div class="highlight-label">Robot platforms validated</div>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-stat">50 Hz</div>
+        <div class="highlight-label">Real-time control, no heavy compute</div>
+      </div>
     </div>
   </div>
 </section>
@@ -180,24 +195,46 @@
 <section class="section" id="method">
   <div class="container is-max-widescreen">
     <div class="section-header">
-      <h2 class="section-title">Method Overview</h2>
+      <h2 class="section-title">How It Works</h2>
+    </div>
+
+    <p class="section-lead">
+      DreamWaQ++ learns to walk by combining what the robot <strong>feels</strong> (joint positions, contact forces) with what it <strong>sees</strong> (3D point clouds), then fusing them through a lightweight mixer that runs in real time.
+    </p>
+
+    <div class="method-steps">
+      <div class="method-step">
+        <div class="method-step-number">Step 1 &mdash; Sense</div>
+        <h4>Multi-Modal Perception</h4>
+        <p>A depth camera captures 3D point clouds at 10 Hz, while proprioceptive sensors read joint states at 200 Hz. A hierarchical memory aligns these asynchronous streams.</p>
+      </div>
+      <div class="method-step">
+        <div class="method-step-number">Step 2 &mdash; Encode</div>
+        <h4>Confidence-Aware Encoding</h4>
+        <p>A PointNet-based encoder with a learned confidence filter rejects noisy or unreliable points. A proprioceptive encoder captures body dynamics as a stochastic latent, enabling skill discovery.</p>
+      </div>
+      <div class="method-step">
+        <div class="method-step-number">Step 3 &mdash; Act</div>
+        <h4>Multi-Modal Fusion &amp; Control</h4>
+        <p>An MLP-mixer fuses both modalities into a unified context. The policy network outputs joint targets at 50 Hz, converted to torques by a PD controller at 200 Hz.</p>
+      </div>
     </div>
 
     <div class="figure-container main-figure">
       <img src="./static/paper_images/png/overview_red.png" alt="DreamWaQ++ architecture overview">
       <p class="figure-caption">
-        Overview of DreamWaQ++: a hierarchical perception-control framework with proprioceptive and exteroceptive encoders fused through a spatio-temporal multi-modal mixer.
+        Architecture overview: proprioceptive and exteroceptive encoders are fused through a spatio-temporal multi-modal mixer, trained end-to-end with PPO.
       </p>
     </div>
 
     <div class="figure-grid">
       <div class="figure-container">
         <img src="./static/paper_images/png/ext_encoder_red.png" alt="Exteroceptive encoder with confidence filter">
-        <p class="figure-caption">PointNet-based exteroceptive encoder with a confidence filter layer that rejects unreliable point features before aggregation.</p>
+        <p class="figure-caption">PointNet-based exteroceptive encoder with confidence filtering.</p>
       </div>
       <div class="figure-container">
         <img src="./static/paper_images/png/embedding_analysis_red.png" alt="Latent embedding analysis">
-        <p class="figure-caption">Learned latent representations capture terrain properties, enabling the controller to distinguish different terrain types.</p>
+        <p class="figure-caption">Learned latent representations naturally cluster by terrain type.</p>
       </div>
     </div>
   </div>
@@ -210,31 +247,38 @@
 <!-- Stair Climbing Race -->
 <section class="section" id="stair-race">
   <div class="container is-max-widescreen">
-    <div class="section-header">
-      <h2 class="section-title">Head-to-Head Stair Climbing Race</h2>
-      <p class="section-subtitle">DreamWaQ++ vs. DreamWaQ (blind) and Unitree built-in controller across 50 stairs</p>
-    </div>
-
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/lAdPj3KTDo8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 2:</strong> Simultaneous head-to-head stair climbing race.</p>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Stair Climbing Race</h3>
+        <p>
+          How fast can a quadruped climb 50 stairs? We raced DreamWaQ++ against the blind DreamWaQ baseline and Unitree's built-in controller. DreamWaQ++ <strong>finished the entire course in 35 seconds</strong>, covering 30 m horizontally and 7.4 m vertically. The blind controller managed only 20 m before losing pace, and the built-in controller failed at 6 m.
+        </p>
+        <p>
+          The key difference: DreamWaQ++ <strong>sees the stairs ahead</strong> and proactively raises its body and extends its foot swing, while the blind baseline drags its feet along stair edges.
+        </p>
       </div>
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/XVC7c5DlB4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 10:</strong> Asynchronous stair-climbing race with gait analysis.</p>
-      </div>
-    </div>
 
-    <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/results_race_red.png" alt="Head-to-head race results">
-      <p class="figure-caption">
-        Race results: (a) head-to-head race on 50 stairs, (b) 3D map of the staircase, (c-e) gait comparison showing DreamWaQ++ proactively raises its body and extends foot swing, while DreamWaQ drags feet along stair edges. DreamWaQ++ completed the course in 35 seconds, covering 30.03 m horizontally and 7.38 m vertically.
-      </p>
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/lAdPj3KTDo8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Head-to-head race: simultaneous comparison.</p>
+        </div>
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/XVC7c5DlB4I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Asynchronous race: detailed gait analysis.</p>
+        </div>
+      </div>
+
+      <div class="figure-container main-figure">
+        <img src="./static/paper_images/png/results_race_red.png" alt="Head-to-head race results">
+        <p class="figure-caption">
+          Race results and gait comparison. DreamWaQ++ proactively raises its body and extends foot swing, while the blind baseline drags feet along stair edges.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -244,29 +288,35 @@
 <!-- Obstacle Awareness -->
 <section class="section" id="obstacle-awareness">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>Obstacle Awareness</h3>
-      <p>
-        DreamWaQ++ demonstrates <strong>affordance-aware locomotion</strong> by adapting its foot swing trajectory to overcome obstacles. The controller extends its swing phase for combined rises up to 30 cm and retains memory of the terrain structure beneath the robot, enabling it to adapt in real time even on asymmetric stair configurations.
-      </p>
-    </div>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Obstacle Awareness</h3>
+        <p>
+          Blind controllers use a fixed gait regardless of what's ahead. DreamWaQ++ adapts its <strong>foot swing trajectory on the fly</strong>&mdash;extending the swing phase to clear combined rises up to 30 cm. It also retains a memory of the terrain structure <em>beneath</em> the robot, so it can handle asymmetric stair configurations where each step is different.
+        </p>
+      </div>
 
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/mgNLLNxg52A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/mgNLLNxg52A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Obstacle negotiation across various stair configurations.</p>
         </div>
-        <p class="video-caption"><strong>Movie 3:</strong> Obstacle negotiation across various stair configurations.</p>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_awareness_red.png" alt="Obstacle awareness results">
+          <p class="figure-caption">Affordance-aware locomotion on asymmetric stairs with foot swing adaptation.</p>
+        </div>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/results_awareness_red.png" alt="Obstacle awareness results">
-        <p class="figure-caption">Affordance-aware locomotion on asymmetric stairs with real-time foot swing adaptation.</p>
-      </div>
-    </div>
 
-    <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Quantitative stair climbing results">
-      <p class="figure-caption">Quantitative comparison of obstacle climbing success rates across different stair rise/run configurations. DreamWaQ++ achieves 20&ndash;40% higher success rates than visual baselines.</p>
+      <div class="insight-box">
+        In simulation tests with 1,000 robots, DreamWaQ++ achieved <strong>20&ndash;40% higher success rates</strong> than vision-based baselines across all stair configurations.
+      </div>
+
+      <div class="figure-container main-figure">
+        <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Quantitative stair climbing results">
+        <p class="figure-caption">Success rates across different stair rise/run configurations.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -276,23 +326,28 @@
 <!-- Emergent Probing Behavior -->
 <section class="section" id="probing">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>Emergent Probing Behavior</h3>
-      <p>
-        When facing uncertain terrain, DreamWaQ++ develops an <strong>emergent probing skill</strong>&mdash;the robot deliberately stops and probes the surface with its front legs before committing to a step. This cautious behavior arises naturally from training without explicit supervision, demonstrating the controller's ability to handle uncertainty adaptively.
-      </p>
-    </div>
-
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/G_lTWikijWk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 4:</strong> Emergent probing behavior on uncertain terrain.</p>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Emergent Probing Behavior</h3>
+        <p>
+          Nobody told the robot to do this. When facing a terrain edge where the depth ahead is uncertain, DreamWaQ++ <strong>stops and probes the surface with its front legs</strong> before committing to a step. This cautious behavior emerged entirely from training&mdash;no explicit reward, no hand-crafted rule.
+        </p>
+        <p>
+          This is possible because the stochastic latent representation encourages the policy to explore diverse strategies during training. The robot effectively learns that <em>"when in doubt, check first."</em>
+        </p>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/results_probing_rev_red.png" alt="Probing behavior analysis">
-        <p class="figure-caption">Analysis of the probing behavior: velocity profiles, estimation error, and knee flexion angles showing deliberate terrain checking before committing.</p>
+
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/G_lTWikijWk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Probing behavior on uncertain terrain edges.</p>
+        </div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_probing_rev_red.png" alt="Probing behavior analysis">
+          <p class="figure-caption">Velocity profiles and knee flexion angles during the probing sequence.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -303,23 +358,28 @@
 <!-- Out-of-Distribution Robustness -->
 <section class="section" id="ood">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>Out-of-Distribution Robustness</h3>
-      <p>
-        DreamWaQ++ gracefully handles <strong>out-of-distribution situations</strong> never encountered during training, including sudden changes of foothold, sensor degradation, unexpected obstacles, and novel terrain types. When rapidly removed from a moving platform, the controller enlarges its support polygon by 20% for a safe landing. The multi-modal latent context forms distinct clusters reflecting real-time adaptation.
-      </p>
-    </div>
-
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/tFI8xDwF4bU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 5:</strong> Adaptation in out-of-distribution situations.</p>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Out-of-Distribution Robustness</h3>
+        <p>
+          What happens when the ground disappears? We tested DreamWaQ++ by <strong>suddenly pulling a moving platform</strong> out from under it. The controller instantly enlarged its support polygon by 20% to land safely&mdash;a situation it had never encountered during training.
+        </p>
+        <p>
+          This resilience comes from the multi-modal fusion: when the visual input disagrees with what the body feels, the proprioceptive encoder takes over and provides a stable fallback. The latent context forms <strong>distinct clusters</strong> in real time, reflecting rapid adaptation.
+        </p>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/results_foothold_red.png" alt="Foothold adaptation results">
-        <p class="figure-caption">Response to sudden foothold changes: velocity profiles, support polygon expansion, and 2D embedding visualization showing distinct adaptation clusters.</p>
+
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/tFI8xDwF4bU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Adaptation in out-of-distribution situations.</p>
+        </div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_foothold_red.png" alt="Foothold adaptation results">
+          <p class="figure-caption">Support polygon expansion and real-time latent adaptation during sudden foothold changes.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -330,23 +390,25 @@
 <!-- Extreme Slopes -->
 <section class="section" id="slopes">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>Extreme Slopes</h3>
-      <p>
-        DreamWaQ++ successfully navigates slopes up to <strong>35 degrees</strong>&mdash;far beyond the 10-degree maximum seen during training. The controller autonomously adopts a crawling gait with reduced body height, resulting in rear leg torques 1.5&times; lower than the blind baseline DreamWaQ.
-      </p>
-    </div>
-
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/lESpqB5LTnI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 6:</strong> Performance on extreme slopes up to 35&deg;.</p>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Extreme Slopes</h3>
+        <p>
+          DreamWaQ++ was trained on slopes up to 10&deg;. We tested it on <strong>35&deg;</strong>&mdash;3.5&times; steeper than anything it had seen. The controller <strong>autonomously adopted a crawling gait</strong> with lowered body height, reducing rear leg torques by 1.5&times; compared to the blind baseline. No retraining needed.
+        </p>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/results_slope_red.png" alt="Slope navigation analysis">
-        <p class="figure-caption">Torque comparison between DreamWaQ++ and DreamWaQ on steep slopes, showing significantly lower rear leg torques with the crawling gait.</p>
+
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/lESpqB5LTnI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Climbing a 35&deg; slope with an emergent crawling gait.</p>
+        </div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_slope_red.png" alt="Slope navigation analysis">
+          <p class="figure-caption">Torque comparison: DreamWaQ++ uses significantly lower rear leg torques through its adaptive crawling strategy.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -357,23 +419,25 @@
 <!-- Large Obstacles -->
 <section class="section" id="obstacles">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>Large Obstacles</h3>
-      <p>
-        DreamWaQ++ overcomes obstacles <strong>larger than the robot's leg length</strong> through emergent parkour-like behaviors: the Unitree Go1 develops a jumping motion for 0.6 m obstacles, ANYmal-C uses a climbing motion for 1.0 m obstacles, and Hound employs a swinging motion for 1.5 m obstacles. In real-world tests, Go1 with a 2.5 kg payload successfully climbed a 41 cm soft sofa.
-      </p>
-    </div>
-
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/pwwwmnd3Xnc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <p class="video-caption"><strong>Movie 8:</strong> Overcoming large obstacles with emergent leaping.</p>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Large Obstacles</h3>
+        <p>
+          Can a small robot climb something taller than its own legs? Yes. DreamWaQ++ develops <strong>parkour-like behaviors</strong> that vary by robot morphology: the Unitree Go1 <strong>jumps</strong> over 0.6 m obstacles, ANYmal-C <strong>climbs</strong> 1.0 m walls, and the Hound robot uses a <strong>swinging motion</strong> to clear 1.5 m barriers. In the real world, a Go1 carrying a 2.5 kg payload climbed a 41 cm soft sofa.
+        </p>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results across platforms">
-        <p class="figure-caption">Large obstacle climbing on Go1 (0.6 m), ANYmal-C (1.0 m), Hound (1.5 m), and real-world deployment with payload.</p>
+
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/pwwwmnd3Xnc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Overcoming large obstacles with emergent leaping and climbing.</p>
+        </div>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results across platforms">
+          <p class="figure-caption">Go1 (0.6 m), ANYmal-C (1.0 m), Hound (1.5 m), and real-world deployment with payload.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -384,27 +448,31 @@
 <!-- Multi-Robot Scalability -->
 <section class="section" id="scalability">
   <div class="container is-max-widescreen">
-    <div class="section-header">
-      <h2 class="section-title">Multi-Robot Scalability</h2>
-      <p class="section-subtitle">Successfully deployed across multiple quadrupedal platforms with diverse sensor configurations</p>
-    </div>
+    <div class="result-section">
+      <div class="result-header">
+        <h3>Multi-Robot Scalability</h3>
+        <p>
+          DreamWaQ++ isn't tied to a single robot. We validated it across <strong>four hardware configurations</strong> with different sensor setups&mdash;from a RealSense camera to Ouster and Livox LiDARs, with up to 3 kg additional payload. The same framework transfers to different quadrupedal morphologies in simulation (Go1, ANYmal-C, Hound).
+        </p>
+      </div>
 
-    <div class="media-row">
-      <div class="video-block">
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/embed/x3RSJRUr7ro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="media-row">
+        <div class="video-block">
+          <div class="publication-video">
+            <iframe src="https://www.youtube.com/embed/x3RSJRUr7ro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p class="video-caption">Cross-platform deployment demonstration.</p>
         </div>
-        <p class="video-caption"><strong>Movie 7:</strong> Cross-platform deployment demonstration.</p>
+        <div class="figure-container" style="margin: 0;">
+          <img src="./static/paper_images/png/hardware_red.png" alt="Hardware configurations">
+          <p class="figure-caption">R1: Go1 + RealSense, R2: A1 (blind), R3: Go1 + Ouster LiDAR, R4: Go1 + Livox LiDARs.</p>
+        </div>
       </div>
-      <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/hardware_red.png" alt="Hardware configurations">
-        <p class="figure-caption">Hardware configurations: R1 (Go1 + RealSense), R2 (A1, blind), R3 (Go1 + Ouster LiDAR + 3.0 kg), R4 (Go1 + Livox LiDARs + 2.5 kg).</p>
-      </div>
-    </div>
 
-    <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/multirobot_success_rev_red.png" alt="Multi-robot success rates">
-      <p class="figure-caption">Success rates across different robot platforms, demonstrating scalability and transferability of DreamWaQ++.</p>
+      <div class="figure-container main-figure">
+        <img src="./static/paper_images/png/multirobot_success_rev_red.png" alt="Multi-robot success rates">
+        <p class="figure-caption">Success rates across different robot platforms.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -415,54 +483,58 @@
 <section class="section" id="ablation">
   <div class="container is-max-widescreen">
     <div class="section-header">
-      <h2 class="section-title">Ablation Studies</h2>
+      <h2 class="section-title">Under the Hood: Ablation Studies</h2>
     </div>
 
+    <p class="section-lead">
+      What makes DreamWaQ++ work? We ablated every component to find out.
+    </p>
+
     <!-- Embedding Analysis -->
-    <div class="content-block">
-      <h3>Embedding Analysis</h3>
+    <div class="result-header">
+      <h3>What does the latent space learn?</h3>
       <p>
-        Proprioceptive context forms an ellipsoidal pattern reflecting foot dynamics, while exteroceptive context shows clearer inter-class terrain separation. The fused multi-modal context displays distinct terrain-based clusters, with the proprioceptive pattern persisting to correct unreliable exteroceptive data.
+        The proprioceptive encoder captures <strong>cyclic foot dynamics</strong> (ellipsoidal patterns), while the exteroceptive encoder separates terrain types into <strong>distinct clusters</strong>. When fused, the multi-modal context preserves both&mdash;and the proprioceptive signal persists even when exteroception is unreliable, acting as a safety net.
       </p>
     </div>
     <div class="figure-container main-figure">
       <img src="./static/paper_images/png/results_embedding_new_red.png" alt="Embedding visualization">
-      <p class="figure-caption">PacMAP visualization of proprioceptive, exteroceptive, and multi-modal context embeddings across different terrain types.</p>
+      <p class="figure-caption">PacMAP visualization: proprioceptive, exteroceptive, and fused multi-modal embeddings across terrain types.</p>
     </div>
 
-    <!-- Component Analysis + Reconstruction -->
-    <div class="content-block" style="margin-top: 2rem;">
-      <h3>Component Analysis</h3>
+    <!-- Component Analysis -->
+    <div class="result-header" style="margin-top: 2rem;">
+      <h3>Which components matter most?</h3>
       <p>
-        Removing the latent fusion mechanism causes the largest performance drop (60.7% on hard stairs). Memory and contrastive loss are critical for collision avoidance, while the versatility gain objective promotes exploration and diverse gait discovery.
+        Removing the <strong>latent fusion mechanism</strong> causes the largest drop&mdash;from 97.8% to 60.7% on hard stairs. The <strong>contrastive loss</strong> aligns the two modalities, and the <strong>versatility gain</strong> encourages the diverse gaits (probing, crawling, leaping) that emerge during training.
       </p>
     </div>
     <div class="figure-grid">
       <div class="figure-container">
-        <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Component contribution heatmap">
-        <p class="figure-caption">Cross-modal feature correlation analysis showing proprioceptive-exteroceptive alignment across terrains.</p>
+        <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Cross-modal feature correlation">
+        <p class="figure-caption">Cross-modal feature correlation across terrain types.</p>
       </div>
       <div class="figure-container">
-        <img src="./static/paper_images/png/ablation_recons_red.png" alt="Terrain reconstruction from latent features">
-        <p class="figure-caption">Terrain reconstruction from latent features, compared against ground truth.</p>
+        <img src="./static/paper_images/png/ablation_recons_red.png" alt="Terrain reconstruction">
+        <p class="figure-caption">Terrain reconstruction from latent features vs. ground truth.</p>
       </div>
     </div>
 
-    <!-- Latent Modulation -->
-    <div class="content-block" style="margin-top: 2rem;">
-      <h3>Latent Modulation for Gait Control</h3>
+    <!-- Latent Modulation + Failures -->
+    <div class="result-header" style="margin-top: 2rem;">
+      <h3>Can we control the gait by tuning the latent space?</h3>
       <p>
-        Specific exteroceptive embedding features directly control gait properties. Scaling up identified latent features decreases gait frequency while increasing step height, producing gaits that resemble stair-climbing behavior.
+        Yes. Scaling specific exteroceptive embedding dimensions <strong>directly modulates gait frequency and step height</strong>. Turning them up produces stair-climbing gaits; turning them down gives flat-ground walking. And when the camera fails entirely? The robot falls back to a <strong>foot-trapping reflex</strong>, using contact sensing alone to maintain a stable pose.
       </p>
     </div>
     <div class="figure-grid">
       <div class="figure-container">
         <img src="./static/paper_images/png/results_modulation_red.png" alt="Latent modulation for gait control">
-        <p class="figure-caption">Latent modulation: scaling exteroceptive embeddings directly modulates gait frequency and step height.</p>
+        <p class="figure-caption">Scaling latent features directly modulates gait frequency and step height.</p>
       </div>
       <div class="figure-container">
         <img src="./static/paper_images/png/results_failures_red.png" alt="Locomotion under exteroception failures">
-        <p class="figure-caption">Resilience under exteroception failures: foot-trapping reflex under noise input, and stable recovery when camera is detached.</p>
+        <p class="figure-caption">Resilience under sensor failures: foot-trapping reflex and stable recovery.</p>
       </div>
     </div>
   </div>
@@ -470,11 +542,11 @@
 
 <hr class="section-divider">
 
-<!-- Additional Videos -->
+<!-- Supplementary Videos -->
 <section class="section" id="videos">
   <div class="container is-max-widescreen">
     <div class="section-header">
-      <h2 class="section-title">Supplementary Videos</h2>
+      <h2 class="section-title">More Videos</h2>
     </div>
 
     <div class="video-grid">
@@ -482,7 +554,7 @@
         <div class="publication-video">
           <iframe src="https://www.youtube.com/embed/qP7VXIzDJXw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <p class="video-caption"><strong>Movie 9:</strong> DreamWaQ (blind baseline) comparison.</p>
+        <p class="video-caption">DreamWaQ (blind baseline) for comparison.</p>
       </div>
       <div class="video-block">
         <div class="publication-video">
@@ -492,7 +564,7 @@
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>Movie 11:</strong> Effect of stochastic latent representation on locomotion.</p>
+        <p class="video-caption">Effect of stochastic latent representation on locomotion.</p>
       </div>
     </div>
   </div>
