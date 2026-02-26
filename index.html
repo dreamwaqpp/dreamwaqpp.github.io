@@ -11,12 +11,11 @@
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
@@ -60,8 +59,10 @@
     <ul class="nav-pane-links">
       <li><a href="#abstract" class="nav-link">Abstract</a></li>
       <li><a href="#method" class="nav-link">Method</a></li>
-      <li><a href="#stair-climbing" class="nav-link">Stair Climbing</a></li>
-      <li><a href="#probing" class="nav-link">Probing Behavior</a></li>
+      <li><a href="#stair-race" class="nav-link">Stair Climbing Race</a></li>
+      <li><a href="#obstacle-awareness" class="nav-link">Obstacle Awareness</a></li>
+      <li><a href="#probing" class="nav-link">Emergent Probing</a></li>
+      <li><a href="#ood" class="nav-link">OOD Robustness</a></li>
       <li><a href="#slopes" class="nav-link">Extreme Slopes</a></li>
       <li><a href="#obstacles" class="nav-link">Large Obstacles</a></li>
       <li><a href="#scalability" class="nav-link">Multi-Robot</a></li>
@@ -88,7 +89,7 @@
             <span class="author-block"><a href="https://anahrendra.github.io">I Made Aswin Nahrendra</a><sup>1,2</sup>,</span>
             <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/byeonghoyu/">Byeongho Yu</a><sup>3</sup>,</span>
             <span class="author-block"><a href="https://minho5oh.notion.site">Minho Oh</a><sup>1,3</sup>,</span>
-            <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/mr-dongkyu-lee/">Dongkyu Lee</a><sup>13</sup>,</span>
+            <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/mr-dongkyu-lee/">Dongkyu Lee</a><sup>1,3</sup>,</span>
             <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/mr-seunghyun-lee/">Seunghyun Lee</a><sup>1</sup>,</span>
             <span class="author-block"><a href="https://urobot.kaist.ac.kr/url_teams/mr-hyeonwoo-lee/">Hyeonwoo Lee</a><sup>1</sup>,</span>
             <span class="author-block"><a href="https://limhyungtae.github.io/aboutme/">Hyungtae Lim</a><sup>4</sup>,</span>
@@ -96,9 +97,9 @@
           </div>
 
           <div class="is-size-6 publication-authors">
-            <span class="author-block"><sup>1</sup>KAIST</span> · 
-            <span class="author-block"><sup>2</sup>KRAFTON</span> · 
-            <span class="author-block"><sup>3</sup>URobotics</span> · 
+            <span class="author-block"><sup>1</sup>KAIST</span> &middot;
+            <span class="author-block"><sup>2</sup>KRAFTON</span> &middot;
+            <span class="author-block"><sup>3</sup>URobotics</span> &middot;
             <span class="author-block"><sup>4</sup>MIT</span>
           </div>
 
@@ -130,7 +131,7 @@
   </div>
 </section>
 
-<!-- Video Segments Grid + Main Figure -->
+<!-- Teaser: Main Video + Figure -->
 <section class="section" style="padding-top: 0;">
   <div class="container is-max-widescreen">
     <div class="two-column">
@@ -138,19 +139,18 @@
         <div class="publication-video">
           <video controls autoplay loop muted preload="metadata" playsinline>
             <source src="./static/videos/Movie S1 - Compilation.webm" type="video/webm">
-            <source src="./static/videos/Movie S1 - Compilation.webm" type="video/webm">
             <source src="./static/videos/Movie S1 - Compilation.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption">Main demonstration video showcasing DreamWaQ++ capabilities.</p>
+        <p class="video-caption">Main demonstration showcasing DreamWaQ++ capabilities across diverse terrains.</p>
       </div>
       <div>
         <div class="figure-container" style="margin: 0;">
-          <img src="./static/paper_images/png/main_red.png" alt="DreamWaQ++ demonstrations">
+          <img src="./static/paper_images/png/main_red.png" alt="DreamWaQ++ demonstrations across diverse terrains">
           <p class="figure-caption">
-            Agile locomotion: (a-b) stairs, (c) leaping, (d) probing, (e) gap crossing, 
-            (f) deformable terrain, (g) moving platforms, (h) 35° slopes.
+            Agile locomotion: (a-b) ascending/descending stairs, (c) leaping, (d) probing,
+            (e) gap crossing, (f) deformable terrain, (g) moving platforms, (h) 35&deg; slopes.
           </p>
         </div>
       </div>
@@ -166,10 +166,13 @@
     </div>
     <div class="abstract-box">
       <p>
-        Quadrupedal robots hold promising potential for navigating cluttered environments. However, approaches relying solely on <strong>proprioception</strong> require front-feet contact to detect obstacles. Meanwhile, incorporating <strong>exteroception</strong> typically requires precisely modeled terrain maps.
+        Quadrupedal robots hold promising potential for applications in navigating cluttered environments with resilience akin to their animal counterparts. However, their floating-base configuration makes them susceptible to real-world uncertainties, presenting substantial challenges in locomotion control.
       </p>
       <p>
-        We propose a novel method to fuse proprioception and exteroception with <strong>resilient multi-modal reinforcement learning</strong>. The result is an agile controller that traverses rough terrains, steep slopes, and high-rise stairs while remaining robust against out-of-distribution situations.
+        Deep reinforcement learning has emerged as a viable alternative for developing robust locomotion controllers. However, approaches relying solely on <strong>proprioception</strong> often sacrifice collision-free locomotion, as they require front-foot contact to detect stairs and adapt the gait. Meanwhile, incorporating <strong>exteroception</strong> necessitates a precisely modeled map observed by exteroceptive sensors over time.
+      </p>
+      <p>
+        This work proposes a novel method for fusing proprioception and exteroception through a <strong>resilient multi-modal reinforcement learning</strong> framework. The proposed method yields a controller demonstrating agile locomotion across diverse real-world courses, including rough terrains, steep slopes, and high-rise stairs, while maintaining robustness in out-of-distribution situations.
       </p>
     </div>
   </div>
@@ -185,20 +188,20 @@
     </div>
 
     <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/overview_red.png" alt="DreamWaQ++ architecture">
+      <img src="./static/paper_images/png/overview_red.png" alt="DreamWaQ++ architecture overview">
       <p class="figure-caption">
-        Hierarchical perception-control framework with low-level encoders and a spatio-temporal mixer for multi-modal fusion.
+        Overview of DreamWaQ++: a hierarchical perception-control framework with proprioceptive and exteroceptive encoders fused through a spatio-temporal multi-modal mixer.
       </p>
     </div>
 
     <div class="figure-grid">
       <div class="figure-container">
-        <img src="./static/paper_images/png/ext_encoder_red.png" alt="Exteroceptive encoder">
-        <p class="figure-caption">Exteroceptive encoder for 3D point clouds.</p>
+        <img src="./static/paper_images/png/ext_encoder_red.png" alt="Exteroceptive encoder with confidence filter">
+        <p class="figure-caption">PointNet-based exteroceptive encoder with a confidence filter layer that rejects unreliable point features before aggregation.</p>
       </div>
       <div class="figure-container">
-        <img src="./static/paper_images/png/embedding_analysis_red.png" alt="Latent embedding">
-        <p class="figure-caption">Learned latent space captures terrain properties.</p>
+        <img src="./static/paper_images/png/embedding_analysis_red.png" alt="Latent embedding analysis">
+        <p class="figure-caption">Learned latent representations capture terrain properties, enabling the controller to distinguish different terrain types.</p>
       </div>
     </div>
   </div>
@@ -206,14 +209,14 @@
 
 <hr class="section-divider">
 
+<!-- ===== EXPERIMENTAL RESULTS ===== -->
+
 <!-- Stair Climbing Race -->
-<section class="section" id="stair-climbing">
+<section class="section" id="stair-race">
   <div class="container is-max-widescreen">
-    <div class="content-block">
-      <h3>🪜 Stair Climbing Performance</h3>
-      <p>
-        Blind controllers can only sense stairs after collision. DreamWaQ++ anticipates and adapts its gait proactively.
-      </p>
+    <div class="section-header">
+      <h2 class="section-title">Head-to-Head Stair Climbing Race</h2>
+      <p class="section-subtitle">DreamWaQ++ vs. DreamWaQ (blind) and Unitree built-in controller across 50 stairs</p>
     </div>
 
     <div class="media-row">
@@ -225,8 +228,42 @@
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>S2:</strong> Race vs DreamWaQ and built-in controller.</p>
+        <p class="video-caption"><strong>Movie 2:</strong> Simultaneous head-to-head stair climbing race.</p>
       </div>
+      <div class="video-block">
+        <div class="publication-video">
+          <video controls autoplay loop muted preload="metadata" playsinline>
+            <source src="./static/videos/Movie S10 - Asynchronous race.webm" type="video/webm">
+            <source src="./static/videos/Movie S10 - Asynchronous race.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p class="video-caption"><strong>Movie 10:</strong> Asynchronous stair-climbing race with gait analysis.</p>
+      </div>
+    </div>
+
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/results_race_red.png" alt="Head-to-head race results">
+      <p class="figure-caption">
+        Race results: (a) head-to-head race on 50 stairs, (b) 3D map of the staircase, (c-e) gait comparison showing DreamWaQ++ proactively raises its body and extends foot swing, while DreamWaQ drags feet along stair edges. DreamWaQ++ completed the course in 35 seconds, covering 30.03 m horizontally and 7.38 m vertically.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Obstacle Awareness -->
+<section class="section" id="obstacle-awareness">
+  <div class="container is-max-widescreen">
+    <div class="content-block">
+      <h3>Obstacle Awareness</h3>
+      <p>
+        DreamWaQ++ demonstrates <strong>affordance-aware locomotion</strong> by adapting its foot swing trajectory to overcome obstacles. The controller extends its swing phase for combined rises up to 30 cm and retains memory of the terrain structure beneath the robot, enabling it to adapt in real time even on asymmetric stair configurations.
+      </p>
+    </div>
+
+    <div class="media-row">
       <div class="video-block">
         <div class="publication-video">
           <video controls autoplay loop muted preload="metadata" playsinline>
@@ -235,67 +272,47 @@
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>S3:</strong> Various stair configurations.</p>
+        <p class="video-caption"><strong>Movie 3:</strong> Obstacle negotiation across various stair configurations.</p>
+      </div>
+      <div class="figure-container" style="margin: 0;">
+        <img src="./static/paper_images/png/results_awareness_red.png" alt="Obstacle awareness results">
+        <p class="figure-caption">Affordance-aware locomotion on asymmetric stairs with real-time foot swing adaptation.</p>
       </div>
     </div>
 
     <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Stair climbing results">
-      <p class="figure-caption">Quantitative comparison across different stair rise/run configurations.</p>
+      <img src="./static/paper_images/png/results_stairs_quant_red.png" alt="Quantitative stair climbing results">
+      <p class="figure-caption">Quantitative comparison of obstacle climbing success rates across different stair rise/run configurations. DreamWaQ++ achieves 20&ndash;40% higher success rates than visual baselines.</p>
     </div>
   </div>
 </section>
 
 <hr class="section-divider">
 
-<!-- Emergent Behaviors + OOD -->
+<!-- Emergent Probing Behavior -->
 <section class="section" id="probing">
   <div class="container is-max-widescreen">
-    <div class="two-column">
-      <!-- Probing -->
-      <div>
-        <div class="content-block">
-          <h3>🔍 Emergent Probing</h3>
-          <p>
-            When facing uncertain terrain, DreamWaQ++ cautiously probes with its front leg before committing—a behavior that emerged naturally from training.
-          </p>
+    <div class="content-block">
+      <h3>Emergent Probing Behavior</h3>
+      <p>
+        When facing uncertain terrain, DreamWaQ++ develops an <strong>emergent probing skill</strong>&mdash;the robot deliberately stops and probes the surface with its front legs before committing to a step. This cautious behavior arises naturally from training without explicit supervision, demonstrating the controller's ability to handle uncertainty adaptively.
+      </p>
+    </div>
+
+    <div class="media-row">
+      <div class="video-block">
+        <div class="publication-video">
+          <video controls autoplay loop muted preload="metadata" playsinline>
+            <source src="./static/videos/Movie S4 - Probing.webm" type="video/webm">
+            <source src="./static/videos/Movie S4 - Probing.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
-        <div class="video-block">
-          <div class="publication-video">
-            <video controls autoplay loop muted preload="metadata" playsinline>
-              <source src="./static/videos/Movie S4 - Probing.webm" type="video/webm">
-              <source src="./static/videos/Movie S4 - Probing.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <p class="video-caption"><strong>S4:</strong> Probing behavior on uncertain terrain.</p>
-        </div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/results_probing_red.png" alt="Probing analysis">
-        </div>
+        <p class="video-caption"><strong>Movie 4:</strong> Emergent probing behavior on uncertain terrain.</p>
       </div>
-      
-      <!-- OOD -->
-      <div>
-        <div class="content-block">
-          <h3>🛡️ Out-of-Distribution Robustness</h3>
-          <p>
-            DreamWaQ++ gracefully handles sensor degradation, unexpected obstacles, and novel terrain types never seen during training.
-          </p>
-        </div>
-        <div class="video-block">
-          <div class="publication-video">
-            <video controls autoplay loop muted preload="metadata" playsinline>
-              <source src="./static/videos/Movie S5 - OOD.webm" type="video/webm">
-              <source src="./static/videos/Movie S5 - OOD.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <p class="video-caption"><strong>S5:</strong> Adaptation in OOD situations.</p>
-        </div>
-        <div class="figure-container">
-          <img src="./static/paper_images/png/results_awareness_red.png" alt="Awareness analysis">
-        </div>
+      <div class="figure-container" style="margin: 0;">
+        <img src="./static/paper_images/png/results_probing_rev_red.png" alt="Probing behavior analysis">
+        <p class="figure-caption">Analysis of the probing behavior: velocity profiles, estimation error, and knee flexion angles showing deliberate terrain checking before committing.</p>
       </div>
     </div>
   </div>
@@ -303,26 +320,62 @@
 
 <hr class="section-divider">
 
-<!-- Slopes -->
+<!-- Out-of-Distribution Robustness -->
+<section class="section" id="ood">
+  <div class="container is-max-widescreen">
+    <div class="content-block">
+      <h3>Out-of-Distribution Robustness</h3>
+      <p>
+        DreamWaQ++ gracefully handles <strong>out-of-distribution situations</strong> never encountered during training, including sudden changes of foothold, sensor degradation, unexpected obstacles, and novel terrain types. When rapidly removed from a moving platform, the controller enlarges its support polygon by 20% for a safe landing. The multi-modal latent context forms distinct clusters reflecting real-time adaptation.
+      </p>
+    </div>
+
+    <div class="media-row">
+      <div class="video-block">
+        <div class="publication-video">
+          <video controls autoplay loop muted preload="metadata" playsinline>
+            <source src="./static/videos/Movie S5 - OOD.webm" type="video/webm">
+            <source src="./static/videos/Movie S5 - OOD.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p class="video-caption"><strong>Movie 5:</strong> Adaptation in out-of-distribution situations.</p>
+      </div>
+      <div class="figure-container" style="margin: 0;">
+        <img src="./static/paper_images/png/results_foothold_red.png" alt="Foothold adaptation results">
+        <p class="figure-caption">Response to sudden foothold changes: velocity profiles, support polygon expansion, and 2D embedding visualization showing distinct adaptation clusters.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- Extreme Slopes -->
 <section class="section" id="slopes">
   <div class="container is-max-widescreen">
     <div class="content-block">
-      <h3>⛰️ Extreme Slopes</h3>
-      <p>Successfully navigates slopes up to <strong>35 degrees</strong>.</p>
+      <h3>Extreme Slopes</h3>
+      <p>
+        DreamWaQ++ successfully navigates slopes up to <strong>35 degrees</strong>&mdash;far beyond the 10-degree maximum seen during training. The controller autonomously adopts a crawling gait with reduced body height, resulting in rear leg torques 1.5&times; lower than the blind baseline DreamWaQ.
+      </p>
     </div>
-    <div class="video-block">
-      <div class="publication-video">
-        <video controls autoplay loop muted preload="metadata" playsinline>
-          <source src="./static/videos/Movie S6 - Slope.webm" type="video/webm">
-          <source src="./static/videos/Movie S6 - Slope.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+
+    <div class="media-row">
+      <div class="video-block">
+        <div class="publication-video">
+          <video controls autoplay loop muted preload="metadata" playsinline>
+            <source src="./static/videos/Movie S6 - Slope.webm" type="video/webm">
+            <source src="./static/videos/Movie S6 - Slope.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p class="video-caption"><strong>Movie 6:</strong> Performance on extreme slopes up to 35&deg;.</p>
       </div>
-      <p class="video-caption"><strong>S6:</strong> Performance on extreme slopes.</p>
-    </div>
-    <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/results_slope_red.png" alt="Slope results">
-      <p class="figure-caption">Quantitative analysis of slope navigation performance.</p>
+      <div class="figure-container" style="margin: 0;">
+        <img src="./static/paper_images/png/results_slope_red.png" alt="Slope navigation analysis">
+        <p class="figure-caption">Torque comparison between DreamWaQ++ and DreamWaQ on steep slopes, showing significantly lower rear leg torques with the crawling gait.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -333,22 +386,27 @@
 <section class="section" id="obstacles">
   <div class="container is-max-widescreen">
     <div class="content-block">
-      <h3>🧗 Large Obstacles</h3>
-      <p>Climbs obstacles <strong>larger than its leg length</strong> using emergent leaping.</p>
+      <h3>Large Obstacles</h3>
+      <p>
+        DreamWaQ++ overcomes obstacles <strong>larger than the robot's leg length</strong> through emergent parkour-like behaviors: the Unitree Go1 develops a jumping motion for 0.6 m obstacles, ANYmal-C uses a climbing motion for 1.0 m obstacles, and Hound employs a swinging motion for 1.5 m obstacles. In real-world tests, Go1 with a 2.5 kg payload successfully climbed a 41 cm soft sofa.
+      </p>
     </div>
-    <div class="video-block">
-      <div class="publication-video">
-        <video controls autoplay loop muted preload="metadata" playsinline>
-          <source src="./static/videos/Movie S8 - Extreme.webm" type="video/webm">
-          <source src="./static/videos/Movie S8 - Extreme.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+
+    <div class="media-row">
+      <div class="video-block">
+        <div class="publication-video">
+          <video controls autoplay loop muted preload="metadata" playsinline>
+            <source src="./static/videos/Movie S8 - Extreme.webm" type="video/webm">
+            <source src="./static/videos/Movie S8 - Extreme.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <p class="video-caption"><strong>Movie 8:</strong> Overcoming large obstacles with emergent leaping.</p>
       </div>
-      <p class="video-caption"><strong>S8:</strong> Overcoming high obstacles.</p>
-    </div>
-    <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results">
-      <p class="figure-caption">Performance on obstacles of varying heights, demonstrating emergent leaping behaviors.</p>
+      <div class="figure-container" style="margin: 0;">
+        <img src="./static/paper_images/png/results_large_obstacles_red.png" alt="Large obstacle results across platforms">
+        <p class="figure-caption">Large obstacle climbing on Go1 (0.6 m), ANYmal-C (1.0 m), Hound (1.5 m), and real-world deployment with payload.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -359,8 +417,8 @@
 <section class="section" id="scalability">
   <div class="container is-max-widescreen">
     <div class="section-header">
-      <h2 class="section-title">🤖 Multi-Robot Scalability</h2>
-      <p class="section-subtitle">Demonstrated on Unitree Go1, Go2, and B2 platforms</p>
+      <h2 class="section-title">Multi-Robot Scalability</h2>
+      <p class="section-subtitle">Successfully deployed across multiple quadrupedal platforms with diverse sensor configurations</p>
     </div>
 
     <div class="media-row">
@@ -372,17 +430,17 @@
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>S7:</strong> Cross-platform deployment.</p>
+        <p class="video-caption"><strong>Movie 7:</strong> Cross-platform deployment demonstration.</p>
       </div>
       <div class="figure-container" style="margin: 0;">
-        <img src="./static/paper_images/png/hardware_red.png" alt="Hardware setup">
-        <p class="figure-caption">Hardware configurations with various depth sensors.</p>
+        <img src="./static/paper_images/png/hardware_red.png" alt="Hardware configurations">
+        <p class="figure-caption">Hardware configurations: R1 (Go1 + RealSense), R2 (A1, blind), R3 (Go1 + Ouster LiDAR + 3.0 kg), R4 (Go1 + Livox LiDARs + 2.5 kg).</p>
       </div>
     </div>
 
     <div class="figure-container main-figure">
-      <img src="./static/paper_images/png/multirobot_success_red.png" alt="Multi-robot success">
-      <p class="figure-caption">Success rates across different robot platforms.</p>
+      <img src="./static/paper_images/png/multirobot_success_rev_red.png" alt="Multi-robot success rates">
+      <p class="figure-caption">Success rates across different robot platforms, demonstrating scalability and transferability of DreamWaQ++.</p>
     </div>
   </div>
 </section>
@@ -396,14 +454,51 @@
       <h2 class="section-title">Ablation Studies</h2>
     </div>
 
+    <!-- Embedding Analysis -->
+    <div class="content-block">
+      <h3>Embedding Analysis</h3>
+      <p>
+        Proprioceptive context forms an ellipsoidal pattern reflecting foot dynamics, while exteroceptive context shows clearer inter-class terrain separation. The fused multi-modal context displays distinct terrain-based clusters, with the proprioceptive pattern persisting to correct unreliable exteroceptive data.
+      </p>
+    </div>
+    <div class="figure-container main-figure">
+      <img src="./static/paper_images/png/results_embedding_new_red.png" alt="Embedding visualization">
+      <p class="figure-caption">PacMAP visualization of proprioceptive, exteroceptive, and multi-modal context embeddings across different terrain types.</p>
+    </div>
+
+    <!-- Component Analysis + Reconstruction -->
+    <div class="content-block" style="margin-top: 2rem;">
+      <h3>Component Analysis</h3>
+      <p>
+        Removing the latent fusion mechanism causes the largest performance drop (60.7% on hard stairs). Memory and contrastive loss are critical for collision avoidance, while the versatility gain objective promotes exploration and diverse gait discovery.
+      </p>
+    </div>
     <div class="figure-grid">
       <div class="figure-container">
-        <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Ablation heatmap">
-        <p class="figure-caption">Component contribution analysis.</p>
+        <img src="./static/paper_images/png/ablation_heatmap_red.png" alt="Component contribution heatmap">
+        <p class="figure-caption">Cross-modal feature correlation analysis showing proprioceptive-exteroceptive alignment across terrains.</p>
       </div>
       <div class="figure-container">
-        <img src="./static/paper_images/png/ablation_recons_red.png" alt="Reconstruction ablation">
-        <p class="figure-caption">Impact of reconstruction objectives.</p>
+        <img src="./static/paper_images/png/ablation_recons_red.png" alt="Terrain reconstruction from latent features">
+        <p class="figure-caption">Terrain reconstruction from latent features, compared against ground truth.</p>
+      </div>
+    </div>
+
+    <!-- Latent Modulation -->
+    <div class="content-block" style="margin-top: 2rem;">
+      <h3>Latent Modulation for Gait Control</h3>
+      <p>
+        Specific exteroceptive embedding features directly control gait properties. Scaling up identified latent features decreases gait frequency while increasing step height, producing gaits that resemble stair-climbing behavior.
+      </p>
+    </div>
+    <div class="figure-grid">
+      <div class="figure-container">
+        <img src="./static/paper_images/png/results_modulation_red.png" alt="Latent modulation for gait control">
+        <p class="figure-caption">Latent modulation: scaling exteroceptive embeddings directly modulates gait frequency and step height.</p>
+      </div>
+      <div class="figure-container">
+        <img src="./static/paper_images/png/results_failures_red.png" alt="Locomotion under exteroception failures">
+        <p class="figure-caption">Resilience under exteroception failures: foot-trapping reflex under noise input, and stable recovery when camera is detached.</p>
       </div>
     </div>
   </div>
@@ -415,7 +510,7 @@
 <section class="section" id="videos">
   <div class="container is-max-widescreen">
     <div class="section-header">
-      <h2 class="section-title">Additional Videos</h2>
+      <h2 class="section-title">Supplementary Videos</h2>
     </div>
 
     <div class="video-grid">
@@ -427,29 +522,29 @@
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>S9:</strong> DreamWaQ baseline comparison.</p>
+        <p class="video-caption"><strong>Movie 9:</strong> DreamWaQ (blind baseline) comparison.</p>
       </div>
       <div class="video-block">
         <div class="publication-video">
           <video controls autoplay loop muted preload="metadata" playsinline>
-            <source src="./static/videos/Movie S10 - Asynchronous race.webm" type="video/webm">
-            <source src="./static/videos/Movie S10 - Asynchronous race.mp4" type="video/mp4">
+            <source src="./static/videos/Movie S11 - Stochastic.webm" type="video/webm">
+            <source src="./static/videos/Movie S11 - Stochastic.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
-        <p class="video-caption"><strong>S10:</strong> Asynchronous stair-climbing race.</p>
+        <p class="video-caption"><strong>Movie 11:</strong> Effect of stochastic latent representation on locomotion.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- BibTeX -->
-<section class="section" id="BibTeX">
+<section class="section" id="bibtex">
   <div class="container is-max-desktop content">
     <div class="section-header">
       <h2 class="section-title">Citation</h2>
     </div>
-    
+
     <div class="bibtex-section">
       <button class="copy-button" onclick="copyBibtex()">
         <i class="fas fa-copy"></i>
@@ -457,7 +552,7 @@
       </button>
       <pre><code id="bibtex-content">@article{nahrendra2024obstacle,
   title={Obstacle-Aware Quadrupedal Locomotion With Resilient Multi-Modal Reinforcement Learning},
-  author={Nahrendra, I Made Aswin and Yu, Byeongho and Oh, Minho and Lee, Dongkyu 
+  author={Nahrendra, I Made Aswin and Yu, Byeongho and Oh, Minho and Lee, Dongkyu
           and Lee, Seunghyun and Lee, Hyeonwoo and Lim, Hyungtae and Myung, Hyun},
   journal={IEEE Transactions on Robotics},
   year={2025},
@@ -479,7 +574,7 @@
       <div class="column is-8">
         <div class="content has-text-centered">
           <p>
-            Template from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            Template from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
             Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
           </p>
         </div>
